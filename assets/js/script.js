@@ -1,7 +1,7 @@
 // Go to https://cors-anywhere.herokuapp.com/corsdemo and click the button before opening application
 
 // Define the base URL for Yelp API
-const queryURL = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?";
+const queryURL = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?sort_by=best_match";
 // Prompt the user to enter the Yelp API key, zip code, and limit
 const apiKey = prompt('Enter Yelp API key');
 const zip = prompt('Enter a zip code');
@@ -58,6 +58,7 @@ const fetchReviews = async (businesses) => {
             const data = await response.json();
             // Log reviews for the current business
             console.log('Reviews for', business.name + ':', data.reviews);
+            console.log('Location', business.location.address1, business.location.city, business.location.state, business.location.zip);
         } catch (error) {
             // Handle errors if fetching reviews fails
             console.error('Error fetching reviews:', error);
