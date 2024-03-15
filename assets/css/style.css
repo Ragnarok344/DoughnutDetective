@@ -1,0 +1,44 @@
+.header {
+    padding: 20px;
+    text-align: left;
+    background: tan;
+    color: green;
+    font-size: 30px;
+    font-family: 'Courier New', Courier, monospace;
+ }
+
+ 
+
+ .div-2 {
+    background-color: green;
+    padding: 30px;
+    text-align: right;
+    width: 2500px;
+    height: 100px;
+ }
+
+ .div-3 {
+    background-color: green;
+    padding: 30px;
+    text-align: right;
+    width: 2500px;
+    height: 100px;
+ }
+
+ .div-4 {
+    background-color: green;
+    padding: 30px;
+    text-align: right;
+    width: 2500px;
+    height: 100px;
+ }
+ 
+
+ img {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    object-fit: cover;
+    height: 100px;
+    
+ }
+  
