@@ -4,14 +4,14 @@
 const queryURL = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?";
 // Prompt the user to enter the Yelp API key, zip code, and limit
 const apiKey = prompt('Enter Yelp API key');
+const googleApiKey = prompt('Enter Places API key');
 const zip = prompt('Enter a zip code');
-const limit = prompt('Enter limit');
+const limit = 3;
 const term = 'donut';
 // define the base url for google places api
-const googlePlacesURL = "https://places.googleapis.com/v1/places/findplacefromtext/json?";//how-to.dev/api/user", {
+const googlePlacesURL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?";//how-to.dev/api/user", {
     
-const googlePlacesPhotoURL = "https://maps.googleapis.com/maps/api/place/photo?";
-const googleApiKey = '';
+const googlePlacesPhotoURL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/photo?";
 
 
 // Construct the URL for searching businesses using the provided parameters
@@ -21,16 +21,16 @@ listURL.searchParams.append('term', term);
 listURL.searchParams.append('location', zip);
 
 // fetches place_id from google
-const fetchPlaceId = async (businessName) => {
+const fetchPlaceId = async (address) => {
     const placeURL = new URL(googlePlacesURL);
-    placeURL.searchParams.append('input', businessName);
-    placeURL.searchParams.append('inputtype', 'textQuery');
-    placeURL.searchParams.append('fields', 'id');
+    placeURL.searchParams.append('query', 'donuts ' + address);
+    placeURL.searchParams.append('radius', '5');
     placeURL.searchParams.append('key', googleApiKey);
 
     const response = await fetch(placeURL);
     const data = await response.json();
-    return data.candidates[0].place_id;
+    console.log(data);
+    return data.results[0].place_id;
 }
 //fetches photo references from google
 const fetchPhotoReference = async (placeId) => {
@@ -63,18 +63,18 @@ const fetchBusinesses = async () => {
         });
         // Extract JSON data from the response
         const data = await response.json();
-        //return the array of buisnesses
+        //return the array of business
         const businesses = data.businesses;
-       // log the buisness
+       // log the business
         for (const business of businesses) {
-            const placeId = await fetchPlaceId(business.location.address1 + ' ' + business.location.city + ' ' + business.location.state + ' ' + business.location.zip);
-            const photoReference = await fetchPhotoReference(placeId);
-            const photoURL = await fetchPhoto(photoReference);
+            const address = business.location.address1
+            const placeId = await fetchPlaceId(address.substring(1, address.length - 1) + ' ' + business.location.city + ' ' + business.location.state + ' ' + business.location.zip);
+            // const photoReference = await fetchPhotoReference(placeId);
+            // const photoURL = await fetchPhoto(photoReference);
 
             // Create an img element and set its src to the photo URL
             const img = document.createElement('img');
             img.src = photoURL;
-
             // Append the img element to the body of the document
             document.body.appendChild(img);
         }
