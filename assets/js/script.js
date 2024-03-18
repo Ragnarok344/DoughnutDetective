@@ -179,6 +179,7 @@ $(document).ready(function () {
 
 
 
+
         // Call the fetchBusinesses function to fetch businesses, then call fetchReviews with the retrieved businesses
         const businesses = fetchBusinesses()
             .then(result => {
@@ -189,6 +190,7 @@ $(document).ready(function () {
                 // Handle errors from fetchBusinesses
                 console.error('Error:', error);
             });
+            console.log(businesses);
     }
     
 });
