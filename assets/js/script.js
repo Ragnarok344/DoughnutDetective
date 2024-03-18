@@ -49,7 +49,8 @@ $(document).ready(function () {
 
     // Fetches photo from Google Places
     const fetchPhoto = async (photoReference) => {
-        const photoURL = new URL(googlePlacesPhotoURL + photoReference.reference + '/media');
+        console.log(photoReference);
+        const photoURL = new URL(googlePlacesPhotoURL + photoReference + '/media');
         photoURL.searchParams.append('maxHeightPx', '400');
         photoURL.searchParams.append('key', placesKey);
         return photoURL.href;
