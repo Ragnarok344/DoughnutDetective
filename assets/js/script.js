@@ -8,7 +8,7 @@ $(document).ready(function () {
     localStorage.setItem('yelpKey', yelpKey);
     const placesKey = localStorage.getItem('placesKey') || prompt('Enter Places API key');
     localStorage.setItem('placesKey', placesKey);
-    const zip = prompt('Enter a zip code');
+    let zip;
     const limit = 3;
     const term = 'donut';
     // Define the base URL for Google Places API
@@ -169,14 +169,28 @@ $(document).ready(function () {
         }
     };
 
-    // Call the fetchBusinesses function to fetch businesses, then call fetchReviews with the retrieved businesses
-    fetchBusinesses()
-        .then(result => {
-            // Log or process the result as needed
-            console.log(result);
-        })
-        .catch(error => {
-            // Handle errors from fetchBusinesses
-            console.error('Error:', error);
-        });
+    $("#search").on("submit", function (event) {
+        event.preventDefault();
+        searchZip();
+
+    });
+    function searchZip() {
+        zip = $("#zip").val();
+
+
+
+
+        // Call the fetchBusinesses function to fetch businesses, then call fetchReviews with the retrieved businesses
+        const businesses = fetchBusinesses()
+            .then(result => {
+
+                return result;
+            })
+            .catch(error => {
+                // Handle errors from fetchBusinesses
+                console.error('Error:', error);
+            });
+            console.log(businesses);
+    }
+    
 });
