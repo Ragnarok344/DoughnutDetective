@@ -16,10 +16,7 @@ $(document).ready(function () {
     const googlePlacesPhotoURL = "https://places.googleapis.com/v1/";
 
     // Construct the URL for searching businesses using the provided parameters
-    const listURL = new URL(queryURL);
-    listURL.searchParams.append('limit', limit);
-    listURL.searchParams.append('term', term);
-    listURL.searchParams.append('location', zip);
+
 
     // Fetches place_id from Google
     const fetchPlaceId = async (address) => {
@@ -117,6 +114,10 @@ $(document).ready(function () {
 
     // Function to fetch businesses from Yelp API
     const fetchBusinesses = async () => {
+        const listURL = new URL(queryURL);
+        listURL.searchParams.append('limit', limit);
+        listURL.searchParams.append('term', term);
+        listURL.searchParams.append('location', zip);
         try {
             const response = await fetch(listURL, {
                 method: "GET",
@@ -172,16 +173,16 @@ $(document).ready(function () {
     $("#search").on("submit", function (event) {
         event.preventDefault();
         searchZip();
-
     });
-    function searchZip() {
+    async function searchZip() {
         zip = $("#zip").val();
 
-
-
-
-        // Call the fetchBusinesses function to fetch businesses, then call fetchReviews with the retrieved businesses
-        const businesses = await fetchBusinesses();
+        try {
+            const businesses = await fetchBusinesses();
+            console.log(businesses);
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
-    
+
 });
