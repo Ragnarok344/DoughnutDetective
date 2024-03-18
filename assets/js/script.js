@@ -191,6 +191,32 @@ $(document).ready(function () {
                 console.error('Error:', error);
             });
             console.log(businesses);
+            displayResults(businesses);
     }
-    
-});
+
+
+        function displayResults(businesses) {
+            console.log(businesses);
+            businesses.then(function (businesses) {
+                console.log(businesses);
+                for (let i = 0; i < businesses.length; i++) {
+                    let card = $("<div>").addClass("card");
+                    let cardBody = $("<div>").addClass("card-body");
+                    let cardTitle = $("<h5>").addClass("card-title");
+                    cardTitle.text(businesses[i].name);
+                    let img = $("<img>").attr("src", businesses[i].photoURL);
+                    let reveiws = $("<div>").addClass("reveiws");
+                    for (let j = 0; j < businesses[i].reviews.length; j++) {
+                        let reveiw = $("<p>").text(businesses[i].reviews[j].text);
+                        reveiws.append(reveiw);
+                    }
+                    cardBody.append(cardTitle, img, reveiws);
+                    card.append(cardBody);
+                    $(document).append(card);
+                    
+
+                    
+                } 
+            }); 
+        }
+    });
