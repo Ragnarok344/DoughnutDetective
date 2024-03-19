@@ -199,10 +199,10 @@ $(document).ready(function () {
         // Clear the previous results
         for (let i = 0; i < businesses.length; i++) {
             // Create a new card for each business
-            let card = $("<div>").addClass("card");
-            let cardBody = $("<div>").addClass("card-body");
+            let card = $("<div>").addClass("grid");
+            let cardBody = $("<div>");
             let yelpLink = $("<a>").attr("href", businesses[i].url);
-            let cardTitle = $("<h5>").addClass("card-title");
+            let cardTitle = $("<h5>");
             cardTitle.text(businesses[i].name);
             yelpLink.append(cardTitle);
             // Create a new link for each business
