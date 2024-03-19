@@ -1,1 +1,2 @@
-TODO
+# Doughnut Detective
+Doughnut Detective is a fun and interactive application designed to help users find the best doughnuts in their city. It uses user ratings and reviews to rank local doughnut shops, providing a comprehensive guide for doughnut lovers everywhere.
