@@ -214,7 +214,14 @@ $(document).ready(function () {
             for (let j = 0; j < businesses[i].reviews.length; j++) {
                 let review = $("<details>");
                 let summary = $("<summary>");
-                summary.text(businesses[i].reviews[j].user.name + " - " + businesses[i].reviews[j].rating + " stars" + " - " + businesses[i].reviews[j].time_created);
+                let stars ="";
+                for (let k = 0; k < businesses[i].reviews[j].rating; k++) {
+                    stars += "⭐";
+                }
+                for (let k = 0; k < 5 - businesses[i].reviews[j].rating; k++) {
+                    stars += "☆";
+                }
+                summary.html(businesses[i].reviews[j].user.name + " - "+ stars + " - "   + businesses[i].reviews[j].time_created);
                 let p = $("<p>");
                 p.text(businesses[i].reviews[j].text);
                 review.append(summary, p);
