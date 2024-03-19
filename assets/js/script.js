@@ -167,10 +167,24 @@ $(document).ready(function () {
         event.preventDefault();
         searchZip();
     });
-    // Function to search for businesses using the provided zip code
+    
+    $('#newSearch').click(function (e) { 
+        e.preventDefault();
+        $('#modal').attr('open', '');
+    });
+
+    $('#close').click(function (e) {
+        $('#modal').removeAttr('open');
+    })
+// Function to search for businesses using the provided zip code
     async function searchZip() {
         zip = $("#zip").val();
+
+        $('#modal').removeAttr('open');
+    
+
         // Fetch businesses using the provided zip code
+
         try {
             const businesses = await fetchBusinesses();
             console.log(businesses);
