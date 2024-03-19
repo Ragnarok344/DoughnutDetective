@@ -226,7 +226,7 @@ $(document).ready(function () {
         // Clear the previous results
         for (let i = 0; i < businesses.length; i++) {
             // Create a new card for each business
-            let card = $("<article>").addClass("grid");
+            let card = $("<article>").addClass("container-fluid");
             let cardBody = $("<div>");
             let yelpLink = $("<a>").attr("href", businesses[i].url);
             let cardTitle = $("<header>");
@@ -240,7 +240,7 @@ $(document).ready(function () {
             imgDiv.append(googleMapsLink);
 
             // Create a new div for reviews
-            let reviews = $("<div>").addClass("reviews grid");
+            let reviews = $("<div>").addClass("reviews");
             for (let j = 0; j < businesses[i].reviews.length; j++) {
                 let review = $("<details>");
                 let summary = $("<summary>");
