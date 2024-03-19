@@ -6,23 +6,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Doughnut Detective</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.orange.min.css" />
-  <link rel="stylesheet" href="./assets/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.pumpkin.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 
 <body>
-  <header>
-    <h1>D&#128269ughnut Detectives!</h1>
-    <button id="newSearch">New Search</button>
+  <header class="container-fluid pico-background-pumpkin-800">
+    <div class="grid">
+      <div id="title">
+        <h1>D&#127849ughnut Detective</h1>
+      </div>
+      <div class="controls">
+        <button id="newSearch">New Search</button>
+        <select name="favorite-cuisine" aria-label="Select your favorite cuisine..." required id="history">
+          <option selected disabled value="">
+            Search History
+          </option>
+        </select>
+      </div>
+    </div>
   </header>
+
   <main class="container">
     <section id="results">
       <h2>Results</h2>
       <div id="resultsList">
       </div>
     </section>
-    </main>
+  </main>
+
+  <footer class="container-fluid pico-background-pumpkin-800">
+    <div class="grid">
+      <div id="footer">
+        <p>&copy; 2021 Doughnut Detective</p>
+      </div>
+  </div>
 
   <!-- modal -->
   <dialog open id="modal">
@@ -41,11 +60,9 @@
     </article>
   </dialog>
 
-  
   <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
     crossorigin="anonymous"></script>
   <script src="./assets/js/script.js"></script>
 </body>
-
 
 </html>
