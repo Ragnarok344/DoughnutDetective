@@ -175,8 +175,19 @@ $(document).ready(function () {
         searchZip();
     });
     
+    $('#newSearch').click(function (e) { 
+        e.preventDefault();
+        $('#modal').attr('open', '');
+    });
+
+    $('#close').click(function (e) {
+        $('#modal').removeAttr('open');
+    })
+
     async function searchZip() {
         zip = $("#zip").val();
+
+        $('#modal').removeAttr('open');
 
         try {
             const businesses = await fetchBusinesses();
