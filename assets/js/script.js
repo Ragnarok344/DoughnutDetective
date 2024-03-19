@@ -197,6 +197,26 @@ $(document).ready(function () {
         };
     }
 
+    function updateSearchHistory() {
+        let searchHistory = JSON.parse(localStorage.getItem('History')) || [];
+        for (let i = 0; i < searchHistory.length; i++) {
+            let option = $("<option>").text(searchHistory[i].city + ", " + searchHistory[i].zip);
+            option.attr("value", searchHistory[i].zip);
+            $("#history").append(option);
+        }
+    }
+    function addSearch(city, zip) {
+        let searchHistory = JSON.parse(localStorage.getItem('History')) || [];
+        let search = {
+            city: city,
+            zip: zip
+        };
+        searchHistory.push(search);
+        localStorage.setItem('History', JSON.stringify(searchHistory));
+        updateSearchHistory();
+    }
+
+
     // Function to display the results
     function displayResults(businesses) {
         // Clear the previous results
@@ -236,4 +256,5 @@ $(document).ready(function () {
             $("main").append(card); // Changed to append to body
         }
     }
+    updateSearchHistory();
 });
