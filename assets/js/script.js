@@ -8,7 +8,6 @@ $(document).ready(function () {
     localStorage.setItem('yelpKey', yelpKey);
     const placesKey = "AIzaSyDekQjZnmtOgvPJybLzorOh7BmFKT4SAFs";
     localStorage.setItem('placesKey', placesKey);
-    let zip;
     const limit = 3;
     const term = 'donut';
     // Define the base URL for Google Places API
@@ -105,7 +104,7 @@ $(document).ready(function () {
         }
     };
     // Function to fetch businesses from Yelp API
-    const fetchBusinesses = async () => {
+    const fetchBusinesses = async (zip) => {
         const listURL = new URL(queryURL);
         listURL.searchParams.append('limit', limit);
         listURL.searchParams.append('term', term);
@@ -141,7 +140,8 @@ $(document).ready(function () {
                 const businessDetails = await fetchBusinessDetails(placeId);
                 const photoReference = businessDetails.reference;
                 const photoURL = await fetchPhoto(photoReference);
-
+                const addy = business.location.city + ', ' + business.location.state;
+                const zip = business.location.zip_code;
                 // Fetching reviews for the current business
                 const reviews = await fetchBusinessReviews(business.id);
 
@@ -151,7 +151,9 @@ $(document).ready(function () {
                     name: business.name,
                     url: business.url,
                     reviews: reviews,
-                    googleMapsUri: businessDetails.googleMapsUri // Include googleMapsUri
+                    googleMapsUri: businessDetails.googleMapsUri,
+                    address: addy,
+                    zip: zip
                 });
             }
 
@@ -178,7 +180,7 @@ $(document).ready(function () {
     })
 // Function to search for businesses using the provided zip code
     async function searchZip() {
-        zip = $("#zip").val();
+        let zip = $("#zip").val();
 
         $('#modal').removeAttr('open');
     
@@ -186,8 +188,9 @@ $(document).ready(function () {
         // Fetch businesses using the provided zip code
 
         try {
-            const businesses = await fetchBusinesses();
+            const businesses = await fetchBusinesses(zip);
             console.log(businesses);
+            addSearch(businesses[0].address, businesses[0].zip);
             displayResults(businesses);
         } catch (error) {
             console.error('Error:', error);
