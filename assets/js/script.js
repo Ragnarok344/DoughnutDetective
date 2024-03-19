@@ -14,10 +14,6 @@ $(document).ready(function () {
     // Define the base URL for Google Places API
     const googlePlacesURL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?";
     const googlePlacesPhotoURL = "https://places.googleapis.com/v1/";
-
-    // Construct the URL for searching businesses using the provided parameters
-
-
     // Fetches place_id from Google
     const fetchPlaceId = async (address) => {
         const placeURL = new URL(googlePlacesURL);
@@ -35,7 +31,6 @@ $(document).ready(function () {
             return null; // Or handle this case accordingly
         }
     }
-
     // Fetches photo references from Google
     const fetchBusinessDetails = async (placeId) => {
         const detailsURL = new URL(`https://cors-anywhere.herokuapp.com/https://places.googleapis.com/v1/places/${placeId}?fields=photos,googleMapsUri&key=${placesKey}`);
@@ -52,7 +47,6 @@ $(document).ready(function () {
         photoURL.searchParams.append('key', placesKey);
         return photoURL.href;
     }
-
     // Function to fetch reviews for each business
     const fetchReviews = async (businesses) => {
         console.log('Fetching reviews...');
@@ -83,7 +77,6 @@ $(document).ready(function () {
         }
         console.log('Reviews fetching complete.'); // Log completion of reviews fetching
     };
-
     // Function to fetch reviews for a single business
     const fetchBusinessReviews = async (businessId) => {
         const reviewsURL = `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/${businessId}/reviews?limit=3&sort_by=yelp_sort`;
@@ -111,13 +104,13 @@ $(document).ready(function () {
             throw error;
         }
     };
-
     // Function to fetch businesses from Yelp API
     const fetchBusinesses = async () => {
         const listURL = new URL(queryURL);
         listURL.searchParams.append('limit', limit);
         listURL.searchParams.append('term', term);
         listURL.searchParams.append('location', zip);
+        // Fetch businesses data from Yelp API
         try {
             const response = await fetch(listURL, {
                 method: "GET",
@@ -169,15 +162,15 @@ $(document).ready(function () {
             throw error;
         }
     };
-
+    // Event listener for the search form
     $("#search").on("submit", function (event) {
         event.preventDefault();
         searchZip();
     });
-    
+    // Function to search for businesses using the provided zip code
     async function searchZip() {
         zip = $("#zip").val();
-
+        // Fetch businesses using the provided zip code
         try {
             const businesses = await fetchBusinesses();
             console.log(businesses);
@@ -187,23 +180,28 @@ $(document).ready(function () {
         };
     }
 
-
+    // Function to display the results
     function displayResults(businesses) {
+        // Clear the previous results
         for (let i = 0; i < businesses.length; i++) {
+            // Create a new card for each business
             let card = $("<div>").addClass("card");
             let cardBody = $("<div>").addClass("card-body");
             let yelpLink = $("<a>").attr("href", businesses[i].url);
             let cardTitle = $("<h5>").addClass("card-title");
             cardTitle.text(businesses[i].name);
             yelpLink.append(cardTitle);
+            // Create a new link for each business
             let googleMapsLink = $("<a>").attr("href", businesses[i].googleMapsUri);
             let img = $("<img>").attr("src", businesses[i].photoURL);
             googleMapsLink.append(img);
+            // Create a new div for reviews
             let reviews = $("<div>").addClass("reviews");
             for (let j = 0; j < businesses[i].reviews.length; j++) {
                 let review = $("<p>").text(businesses[i].reviews[j].text);
                 reviews.append(review);
             }
+            // Append the links and reviews to the card
             cardBody.append(yelpLink, googleMapsLink, reviews);
             card.append(cardBody);
             $("body").append(card); // Changed to append to body
