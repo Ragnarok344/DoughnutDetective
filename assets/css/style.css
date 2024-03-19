@@ -1,5 +1,9 @@
+html {
+   /* background-color: var(--pico-primary-background); */
+}
+
 header {
-   background-color: var(--pico-primary-background);
+   background-color: var(--pico-secondary-background);
 }
 
 img {
