@@ -1,7 +1,20 @@
-html {}
+html {
+   box-sizing: border-box;
+   font-size: 16px;
+}
+
+body {
+   font-family: 'Roboto', sans-serif;
+   margin: 0;
+   padding: 0;
+   line-height: 1.6;
+   color: var(--pico-primary-text);
+}
 
 header {
    background-color: var(--pico-secondary-background);
+   color: var(--pico-primary-text);
+   padding: 20px;
 }
 
 img {
@@ -20,12 +33,10 @@ img {
 
 .title {
    flex: 1;
-   /* Title takes up 75% */
 }
 
 .title h1 {
    margin: 0;
-   /* Remove default margin */
 }
 
 .controls {
@@ -63,6 +74,7 @@ main {
 
 footer {
    flex-shrink: 0;
+   background-color: var(--pico-secondary-background);
 }
 
 /* media query for small screens */
