@@ -18,31 +18,37 @@ img {
    align-items: center;
 }
 
-#title {
+.title {
    flex: 1;
    /* Title takes up 75% */
 }
 
-#title h1 {
+.title h1 {
    margin: 0;
    /* Remove default margin */
 }
 
-#controls {
+.controls {
    display: flex;
    flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   flex: 1;
+   max-width: 600px;
 }
 
 #newSearch {
-   padding: 5px;
+   height: 60px;
    margin-bottom: 10px;
+   padding: 5px;
    width: 100%;
 }
 
 #history {
-   padding-top: 5px;
-   padding-bottom: 5px;
+   height: 60px;
+   padding: 5px;
    width: 100%;
+   margin-bottom: 0px;
 }
 
 body {
