@@ -197,7 +197,7 @@ $(document).ready(function () {
         };
     }
 
-    function searchHistory() {
+    function updateSearchHistory() {
         let searchHistory = JSON.parse(localStorage.getItem('History')) || [];
         for (let i = 0; i < searchHistory.length; i++) {
             let option = $("<option>").text(searchHistory[i].city + ", " + searchHistory[i].zip);
@@ -213,7 +213,7 @@ $(document).ready(function () {
         };
         searchHistory.push(search);
         localStorage.setItem('History', JSON.stringify(searchHistory));
-        searchHistory();
+        updateSearchHistory();
     }
 
 
@@ -256,5 +256,5 @@ $(document).ready(function () {
             $("main").append(card); // Changed to append to body
         }
     }
-    searchHistory();
+    updateSearchHistory();
 });
