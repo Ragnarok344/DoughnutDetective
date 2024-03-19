@@ -1,45 +1,34 @@
-.header {
-    padding: 20px;
-    text-align: left;
-    background: tan;
-    color: green;
-    font-size: 30px;
-    font-family: 'Courier New', Courier, monospace;
+img {
+   border: 1px solid #ddd;
+   border-radius: 4px;
+   object-fit: cover;
+   max-height: 500px;
+   max-width: 500px;
+}
+
+.grid {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+#title {
+   flex: 1;
+   /* Title takes up 75% */
+}
+
+#title h1 {
+   margin: 0;
+   /* Remove default margin */
+}
+
+#controls {
+   display: flex;
+   flex-direction: column;
  }
 
- 
-
- .div-2 {
-    background-color: green;
-    padding: 30px;
-    text-align: right;
-    width: 2500px;
-    height: 100px;
+ #newSearch {
+   padding: 5px;
+   margin-bottom: 10px;
+   width: 100%;
  }
-
- .div-3 {
-    background-color: green;
-    padding: 30px;
-    text-align: right;
-    width: 2500px;
-    height: 100px;
- }
-
- .div-4 {
-    background-color: green;
-    padding: 30px;
-    text-align: right;
-    width: 2500px;
-    height: 100px;
-
- }
- 
-
- img {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    object-fit: cover;
-    height: 100px;
-    
- }
- 
