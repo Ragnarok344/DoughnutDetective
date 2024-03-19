@@ -192,15 +192,19 @@ $(document).ready(function () {
         for (let i = 0; i < businesses.length; i++) {
             let card = $("<div>").addClass("card");
             let cardBody = $("<div>").addClass("card-body");
+            let yelpLink = $("<a>").attr("href", businesses[i].url);
             let cardTitle = $("<h5>").addClass("card-title");
             cardTitle.text(businesses[i].name);
+            yelpLink.append(cardTitle);
+            let googleMapsLink = $("<a>").attr("href", businesses[i].googleMapsUri);
             let img = $("<img>").attr("src", businesses[i].photoURL);
+            googleMapsLink.append(img);
             let reviews = $("<div>").addClass("reviews");
             for (let j = 0; j < businesses[i].reviews.length; j++) {
                 let review = $("<p>").text(businesses[i].reviews[j].text);
                 reviews.append(review);
             }
-            cardBody.append(cardTitle, img, reviews);
+            cardBody.append(yelpLink, googleMapsLink, reviews);
             card.append(cardBody);
             $("body").append(card); // Changed to append to body
         }
