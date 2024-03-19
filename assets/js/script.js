@@ -169,8 +169,8 @@ $(document).ready(function () {
         event.preventDefault();
         searchZip();
     });
-    
-    $('#newSearch').click(function (e) { 
+
+    $('#newSearch').click(function (e) {
         e.preventDefault();
         $('#modal').attr('open', '');
     });
@@ -178,29 +178,33 @@ $(document).ready(function () {
     $('#close').click(function (e) {
         $('#modal').removeAttr('open');
     })
-// Function to search for businesses using the provided zip code
+    // Function to search for businesses using the provided zip code
     async function searchZip() {
         let zip = $("#zip").val();
+        if (zip.length !== 5 || isNaN(zip)) {
+            $('#error').css('visibility', 'visible');
+           
+        } else {
+            $('#modal').removeAttr('open');
 
-        $('#modal').removeAttr('open');
-    
-
-        // Fetch businesses using the provided zip code
-
-        try {
-            const businesses = await fetchBusinesses(zip);
-            console.log(businesses);
-            addSearch(businesses[0].address, businesses[0].zip);
-            displayResults(businesses);
-        } catch (error) {
-            console.error('Error:', error);
-        };
+            // Fetch businesses using the provided zip code
+            try {
+                const businesses = await fetchBusinesses(zip);
+                console.log(businesses);
+                $('#error').css('visibility', 'hidden');
+                addSearch(businesses[0].address, businesses[0].zip);
+                displayResults(businesses);
+            } catch (error) {
+                console.error('Error:', error);
+            };
+            
+        }
     }
 
     function updateSearchHistory() {
         let searchHistory = JSON.parse(localStorage.getItem('History')) || [];
         for (let i = 0; i < searchHistory.length; i++) {
-            let option = $("<option>").text(searchHistory[i].city + ", " + searchHistory[i].zip);
+            let option = $("<option>").text(searchHistory[i].city + " - " + searchHistory[i].zip);
             option.attr("value", searchHistory[i].zip);
             $("#history").append(option);
         }
@@ -222,37 +226,40 @@ $(document).ready(function () {
         // Clear the previous results
         for (let i = 0; i < businesses.length; i++) {
             // Create a new card for each business
-            let card = $("<div>").addClass("grid");
+            let card = $("<article>").addClass("grid");
             let cardBody = $("<div>");
             let yelpLink = $("<a>").attr("href", businesses[i].url);
-            let cardTitle = $("<h5>");
-            cardTitle.text(businesses[i].name);
-            yelpLink.append(cardTitle);
+            let cardTitle = $("<header>");
+            yelpLink.text(businesses[i].name);
+            cardTitle.append(yelpLink);
             // Create a new link for each business
             let googleMapsLink = $("<a>").attr("href", businesses[i].googleMapsUri);
             let img = $("<img>").attr("src", businesses[i].photoURL);
+            let imgDiv = $("<div>").addClass("imgDiv grid");
             googleMapsLink.append(img);
+            imgDiv.append(googleMapsLink);
+
             // Create a new div for reviews
-            let reviews = $("<div>").addClass("reviews");
+            let reviews = $("<div>").addClass("reviews grid");
             for (let j = 0; j < businesses[i].reviews.length; j++) {
                 let review = $("<details>");
                 let summary = $("<summary>");
-                let stars ="";
+                let stars = "";
                 for (let k = 0; k < businesses[i].reviews[j].rating; k++) {
                     stars += "⭐";
                 }
                 for (let k = 0; k < 5 - businesses[i].reviews[j].rating; k++) {
                     stars += "☆";
                 }
-                summary.html(businesses[i].reviews[j].user.name + " - " + stars + " - "   + businesses[i].reviews[j].time_created);
+                summary.html(businesses[i].reviews[j].user.name + " - " + stars + " - " + businesses[i].reviews[j].time_created);
                 let p = $("<p>");
                 p.text(businesses[i].reviews[j].text);
                 review.append(summary, p);
                 reviews.append(review);
             }
             // Append the links and reviews to the card
-            cardBody.append(yelpLink, googleMapsLink, reviews);
-            card.append(cardBody);
+            cardBody.append(googleMapsLink, reviews);
+            card.append(cardTitle,cardBody);
             $("main").append(card); // Changed to append to body
         }
     }
