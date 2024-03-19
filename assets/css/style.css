@@ -1,6 +1,4 @@
-html {
-   /* background-color: var(--pico-primary-background); */
-}
+html {}
 
 header {
    background-color: var(--pico-secondary-background);
@@ -50,13 +48,29 @@ img {
 /* media query for small screens */
 @media screen and (max-width: 768px) {
    .grid {
-     flex-direction: column;
+      flex-direction: column;
    }
+
    .controls {
       width: 100%;
    }
+
    .controls button,
    .controls select {
-     width: 100%;
+      width: 100%;
    }
- }
+}
+
+body {
+   display: flex;
+   flex-direction: column;
+   min-height: 100vh;
+}
+
+main {
+   flex: 1 0 auto;
+}
+
+footer {
+   flex-shrink: 0;
+}
