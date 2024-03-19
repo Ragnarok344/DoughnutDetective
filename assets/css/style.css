@@ -9,7 +9,6 @@ body {
    padding: 0;
    line-height: 1.6;
    color: var(--pico-primary-text);
-   background-color: var(--pico-primary-background);
 }
 
 header {
@@ -71,7 +70,6 @@ body {
 
 main {
    flex: 1 0 auto;
-   color: black;  
 }
 
 footer {
