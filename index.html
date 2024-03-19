@@ -6,33 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Doughnut Detective</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.orange.min.css" />
   <link rel="stylesheet" href="./assets/css/style.css">
-  <style>
-    button {
-      border: none;
-      background-color: gray;
-      color: white;
-      padding: 15px 32px;
-      display: inline-block;
-      font-size: 16px;
-      margin: 4px 2px;
-    }
-
-    button:hover {
-      background-color: green;
-      color: tan;
-    }
-  </style>
-
 </head>
 
 <body>
   <div class="header">
     <h1>D&#128269ughnut Detectives!</h1>
-    <form id="search">
-      <input type="text" id="zip">
-      <button type="submit">New Search</button>
-    </form>
+    <button id="newSearch">New Search</button>
   </div>
   <br>
 
@@ -62,6 +43,23 @@
   <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
     crossorigin="anonymous"></script>
   <script src="./assets/js/script.js"></script>
+
+  <!-- modal -->
+  <dialog open id="modal">
+    <article>
+      <header>
+        <button aria-label="Close" rel="prev" id="close"></button>
+        <p>
+          <strong>Enter a zip code</strong>
+        </p>
+      </header>
+      <form id="search">
+        <input type="text" id="zip" placeholder="Zip Code">
+        <p id="error" style="visibility: hidden;">Enter a 5 digit zip code</p>
+        <button type="submit">New Search</button>
+      </form>
+    </article>
+  </dialog>
 </body>
 
-</html>`
+</html>
