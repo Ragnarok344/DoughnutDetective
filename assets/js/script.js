@@ -4,9 +4,9 @@ $(document).ready(function () {
     // Define the base URL for Yelp API
     const queryURL = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?";
     // Prompt the user to enter the Yelp API key, zip code, and limit
-    const yelpKey = localStorage.getItem('yelpKey') || prompt('Enter Yelp API key');
+    const yelpKey = "sHy9Gc5XgP9u3-Q919iLbJQ_jvzDuoz7kWnV-axjrEVNg5uvF3Q2mDPG1uMDoYSQKPNe2VmtZt82mLFCWzHJwhDgP64jiAHlR9PPNCGWZUoBH_0mZJFj16WH-YrzZXYx";
     localStorage.setItem('yelpKey', yelpKey);
-    const placesKey = localStorage.getItem('placesKey') || prompt('Enter Places API key');
+    const placesKey = "AIzaSyDekQjZnmtOgvPJybLzorOh7BmFKT4SAFs";
     localStorage.setItem('placesKey', placesKey);
     let zip;
     const limit = 3;
@@ -212,13 +212,18 @@ $(document).ready(function () {
             // Create a new div for reviews
             let reviews = $("<div>").addClass("reviews");
             for (let j = 0; j < businesses[i].reviews.length; j++) {
-                let review = $("<p>").text(businesses[i].reviews[j].text);
+                let review = $("<details>");
+                let summary = $("<summary>");
+                summary.text(businesses[i].reviews[j].user.name + " - " + businesses[i].reviews[j].rating + " stars" + " - " + businesses[i].reviews[j].time_created);
+                let p = $("<p>");
+                p.text(businesses[i].reviews[j].text);
+                review.append(summary, p);
                 reviews.append(review);
             }
             // Append the links and reviews to the card
             cardBody.append(yelpLink, googleMapsLink, reviews);
             card.append(cardBody);
-            $("body").append(card); // Changed to append to body
+            $("main").append(card); // Changed to append to body
         }
     }
 });
