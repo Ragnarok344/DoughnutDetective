@@ -209,6 +209,12 @@ $(document).ready(function () {
         }
     }
 
+    $(document).click(function(event) {
+        if ($(event.target).closest('#modal article').length === 0 && $('#modal').attr('open')) {
+            $('#modal').removeAttr('open');
+        }
+    });
+
     function updateSearchHistory() {
         let searchHistory = JSON.parse(localStorage.getItem('History')) || [];
 
