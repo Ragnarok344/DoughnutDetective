@@ -240,7 +240,7 @@ $(document).ready(function () {
             imgDiv.append(googleMapsLink);
 
             // Create a new div for reviews
-            let reviewsContainer = $("<div>").addClass("grid");
+            let reviewsContainer = $("<div>").addClass("accordian").attr("id", "myAccordion");;
             let reviews = $("<div>").addClass("reviews");
             for (let j = 0; j < businesses[i].reviews.length; j++) {
                 let review = $("<details>");
@@ -257,6 +257,10 @@ $(document).ready(function () {
                 p.text(businesses[i].reviews[j].text);
                 review.append(summary, p);
                 reviews.append(review);
+
+                if (j < businesses[i].reviews.length - 1) {
+                    reviews.append($("<hr />"));
+                }
             }
             // Append the links and reviews to the card
             reviewsContainer.append(reviews);
