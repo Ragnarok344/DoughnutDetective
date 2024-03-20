@@ -124,7 +124,6 @@ $(document).ready(function () {
             const data = await response.json();
             // Return null if no businesses are found
             if (!data.businesses || data.businesses.length === 0) {
-                console.log('No businesses found.');
                 return null;
             }
             // Return the array of business
@@ -191,21 +190,23 @@ $(document).ready(function () {
         console.log("searchZip called with zip:", zip);
         if (zip.length !== 5 || isNaN(zip)) {
             $('#error').css('visibility', 'visible');
-
         } else {
             $('#modal').removeAttr('open');
-
+    
             // Fetch businesses using the provided zip code
             try {
                 const businesses = await fetchBusinesses(zip);
                 console.log(businesses);
+                if (businesses === null) {
+                    console.log(`No donut places found near ${zip}`);
+                    return;
+                }
                 $('#error').css('visibility', 'hidden');
                 addSearch(businesses[0].address, businesses[0].zip);
                 displayResults(businesses);
             } catch (error) {
                 console.error('Error:', error);
             };
-
         }
     }
 
