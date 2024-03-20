@@ -226,8 +226,8 @@ $(document).ready(function () {
         // Clear the previous results
         for (let i = 0; i < businesses.length; i++) {
             // Create a new card for each business
-            let card = $("<article>").addClass("container-fluid");
-            let cardBody = $("<div>");
+            let card = $("<article>");
+            let cardBody = $("<div>").addClass("container-fluid");
             let yelpLink = $("<a>").attr("href", businesses[i].url);
             let cardTitle = $("<header>");
             yelpLink.text(businesses[i].name);
@@ -258,7 +258,7 @@ $(document).ready(function () {
                 reviews.append(review);
             }
             // Append the links and reviews to the card
-            cardBody.append(googleMapsLink, reviews);
+            cardBody.append(imgDiv, reviews);
             card.append(cardTitle,cardBody);
             $("main").append(card); // Changed to append to body
         }
