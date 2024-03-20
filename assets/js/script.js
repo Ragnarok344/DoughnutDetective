@@ -40,42 +40,12 @@ $(document).ready(function () {
 
     // Fetches photo from Google Places
     const fetchPhoto = async (photoReference) => {
-        console.log(photoReference);
         const photoURL = new URL(googlePlacesPhotoURL + photoReference + '/media');
         photoURL.searchParams.append('maxHeightPx', '400');
         photoURL.searchParams.append('key', placesKey);
         return photoURL.href;
     }
-    // Function to fetch reviews for each business
-    const fetchReviews = async (businesses) => {
-        console.log('Fetching reviews...');
-        console.log(businesses);
-        // Iterate through each business
-        for (const business of businesses) {
-            const reviewsURL = `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/${business.id}/reviews?limit=3&sort_by=yelp_sort`;
-            console.log(business);
-            try {
-                // Fetch reviews data from Yelp API
-                const response = await fetch(reviewsURL, {
-                    method: "GET",
-                    headers: {
-                        "accept": "application/json",
-                        "x-requested-with": "xmlhttprequest",
-                        "Access-Control-Allow-Origin": "*",
-                        "Authorization": `Bearer ${yelpKey}`
-                    },
-                });
-                // Extract JSON data from the response
-                const data = await response.json();
-                // Log reviews for the current business
-                console.log('Reviews for', business.name + ':', data.reviews);
-            } catch (error) {
-                // Handle errors if fetching reviews fails
-                console.error('Error fetching reviews:', error);
-            }
-        }
-        console.log('Reviews fetching complete.'); // Log completion of reviews fetching
-    };
+    
     // Function to fetch reviews for a single business
     const fetchBusinessReviews = async (businessId) => {
         const reviewsURL = `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/${businessId}/reviews?limit=3&sort_by=yelp_sort`;
@@ -120,6 +90,10 @@ $(document).ready(function () {
                     "Authorization": `Bearer ${yelpKey}`
                 },
             });
+
+            if (response.status !== 200) {
+                return null;
+            }
             // Extract JSON data from the response
             const data = await response.json();
             // Return null if no businesses are found
@@ -172,7 +146,6 @@ $(document).ready(function () {
         let selectedValue = $(this).find('option:selected').val();
         let parts = selectedValue.split(" -");
         let selectedZip = parts[1].trim();
-        console.log("Change event triggered");
         searchZip(selectedZip);
     });
 
@@ -187,7 +160,6 @@ $(document).ready(function () {
     })
     // Function to search for businesses using the provided zip code
     async function searchZip(zip = $("#zip").val()) {
-        console.log("searchZip called with zip:", zip);
         if (zip.length !== 5 || isNaN(zip)) {
             $('#error').css('visibility', 'visible');
         } else {
@@ -196,7 +168,6 @@ $(document).ready(function () {
             // Fetch businesses using the provided zip code
             try {
                 const businesses = await fetchBusinesses(zip);
-                console.log(businesses);
                 if (businesses === null) {
                     console.log(`No donut places found near ${zip}`);
                     return;
