@@ -169,6 +169,14 @@ $(document).ready(function () {
         event.preventDefault();
         searchZip();
     });
+    $("#history").change(function() {
+        let selectedValue = $(this).find('option:selected').val();
+        let parts = selectedValue.split(" -");
+        let selectedZip = parts[1].trim();
+        console.log("Change event triggered");
+        searchZip(selectedZip);
+    });
+    
 
     $('#newSearch').click(function (e) {
         e.preventDefault();
@@ -179,8 +187,8 @@ $(document).ready(function () {
         $('#modal').removeAttr('open');
     })
     // Function to search for businesses using the provided zip code
-    async function searchZip() {
-        let zip = $("#zip").val();
+    async function searchZip(zip = $("#zip").val()) {
+        console.log("searchZip called with zip:", zip);
         if (zip.length !== 5 || isNaN(zip)) {
             $('#error').css('visibility', 'visible');
            
@@ -205,7 +213,7 @@ $(document).ready(function () {
         let searchHistory = JSON.parse(localStorage.getItem('History')) || [];
         for (let i = 0; i < searchHistory.length; i++) {
             let option = $("<option>").text(searchHistory[i].city + " - " + searchHistory[i].zip);
-            option.attr("value", searchHistory[i].zip);
+            
             $("#history").append(option);
         }
     }
