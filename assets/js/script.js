@@ -226,8 +226,8 @@ $(document).ready(function () {
         // Clear the previous results
         for (let i = 0; i < businesses.length; i++) {
             // Create a new card for each business
-            let card = $("<article>").addClass("grid");
-            let cardBody = $("<div>");
+            let card = $("<article>");
+            let cardBody = $("<div>").addClass("container-fluid card-container");
             let yelpLink = $("<a>").attr("href", businesses[i].url);
             let cardTitle = $("<header>");
             yelpLink.text(businesses[i].name);
@@ -240,7 +240,8 @@ $(document).ready(function () {
             imgDiv.append(googleMapsLink);
 
             // Create a new div for reviews
-            let reviews = $("<div>").addClass("reviews grid");
+            let reviewsContainer = $("<div>").addClass("accordian").attr("id", "myAccordion");;
+            let reviews = $("<div>").addClass("reviews");
             for (let j = 0; j < businesses[i].reviews.length; j++) {
                 let review = $("<details>");
                 let summary = $("<summary>");
@@ -256,9 +257,14 @@ $(document).ready(function () {
                 p.text(businesses[i].reviews[j].text);
                 review.append(summary, p);
                 reviews.append(review);
+
+                if (j < businesses[i].reviews.length - 1) {
+                    reviews.append($("<hr />"));
+                }
             }
             // Append the links and reviews to the card
-            cardBody.append(googleMapsLink, reviews);
+            reviewsContainer.append(reviews);
+            cardBody.append(imgDiv, reviewsContainer);
             card.append(cardTitle,cardBody);
             $("main").append(card); // Changed to append to body
         }
