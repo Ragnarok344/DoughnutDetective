@@ -169,14 +169,14 @@ $(document).ready(function () {
         event.preventDefault();
         searchZip();
     });
-    $("#history").change(function() {
+    $("#history").change(function () {
         let selectedValue = $(this).find('option:selected').val();
         let parts = selectedValue.split(" -");
         let selectedZip = parts[1].trim();
         console.log("Change event triggered");
         searchZip(selectedZip);
     });
-    
+
 
     $('#newSearch').click(function (e) {
         e.preventDefault();
@@ -191,7 +191,7 @@ $(document).ready(function () {
         console.log("searchZip called with zip:", zip);
         if (zip.length !== 5 || isNaN(zip)) {
             $('#error').css('visibility', 'visible');
-           
+
         } else {
             $('#modal').removeAttr('open');
 
@@ -205,27 +205,37 @@ $(document).ready(function () {
             } catch (error) {
                 console.error('Error:', error);
             };
-            
+
         }
     }
 
     function updateSearchHistory() {
         let searchHistory = JSON.parse(localStorage.getItem('History')) || [];
+
+        $("#history").empty();
         for (let i = 0; i < searchHistory.length; i++) {
             let option = $("<option>").text(searchHistory[i].city + " - " + searchHistory[i].zip);
-            
+
             $("#history").append(option);
         }
     }
+
     function addSearch(city, zip) {
         let searchHistory = JSON.parse(localStorage.getItem('History')) || [];
         let search = {
             city: city,
             zip: zip
         };
-        searchHistory.push(search);
-        localStorage.setItem('History', JSON.stringify(searchHistory));
-        updateSearchHistory();
+
+        // Check if the search already exists in the history
+        let duplicate = searchHistory.some(item => item.city === city && item.zip === zip);
+
+        // If it's not a duplicate, add it to the history
+        if (!duplicate) {
+            searchHistory.push(search);
+            localStorage.setItem('History', JSON.stringify(searchHistory));
+            updateSearchHistory();
+        }
     }
 
 
@@ -273,7 +283,7 @@ $(document).ready(function () {
             // Append the links and reviews to the card
             reviewsContainer.append(reviews);
             cardBody.append(imgDiv, reviewsContainer);
-            card.append(cardTitle,cardBody);
+            card.append(cardTitle, cardBody);
             $("main").append(card); // Changed to append to body
         }
     }
