@@ -80,6 +80,11 @@ footer {
    background-color: var(--pico-secondary-background);
 }
 
+.card-container {
+   display: flex;
+   justify-content: space-between;
+}
+
 /* media query for small screens */
 @media screen and (max-width: 768px) {
    .grid {

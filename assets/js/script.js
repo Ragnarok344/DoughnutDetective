@@ -227,7 +227,7 @@ $(document).ready(function () {
         for (let i = 0; i < businesses.length; i++) {
             // Create a new card for each business
             let card = $("<article>");
-            let cardBody = $("<div>").addClass("container-fluid");
+            let cardBody = $("<div>").addClass("container-fluid card-container");
             let yelpLink = $("<a>").attr("href", businesses[i].url);
             let cardTitle = $("<header>");
             yelpLink.text(businesses[i].name);
