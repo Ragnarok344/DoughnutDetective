@@ -240,6 +240,7 @@ $(document).ready(function () {
             imgDiv.append(googleMapsLink);
 
             // Create a new div for reviews
+            let reviewsContainer = $("<div>").addClass("grid");
             let reviews = $("<div>").addClass("reviews");
             for (let j = 0; j < businesses[i].reviews.length; j++) {
                 let review = $("<details>");
@@ -258,7 +259,8 @@ $(document).ready(function () {
                 reviews.append(review);
             }
             // Append the links and reviews to the card
-            cardBody.append(imgDiv, reviews);
+            reviewsContainer.append(reviews);
+            cardBody.append(imgDiv, reviewsContainer);
             card.append(cardTitle,cardBody);
             $("main").append(card); // Changed to append to body
         }
