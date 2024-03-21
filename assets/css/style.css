@@ -1,3 +1,7 @@
+a {
+   --pico-text-decoration: none;
+}
+
 html {
    box-sizing: border-box;
    font-size: 16px;
@@ -104,6 +108,15 @@ footer {
 .card-container {
    display: flex;
    justify-content: space-between;
+}
+
+#results header {
+   align-items: center;
+   padding-left: 32px;
+}
+
+#results h3 {
+   margin: 0px;
 }
 
 /* media query for small screens */
