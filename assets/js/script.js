@@ -49,9 +49,11 @@ $(document).ready(function () {
 
 // Functions
 
-// Fetch place ID from Google Places API
-// address: string - Address to search for
-// returns: string - Place ID or null if no results are found
+/*
+Fetch place ID from Google Places API
+address: string - Address to search for
+returns: string - Place ID or null if no results are found
+*/
 const fetchPlaceId = async (address) => {
     // Construct URL for Google Places API
     const placeURL = new URL(googlePlacesURL);
@@ -70,9 +72,11 @@ const fetchPlaceId = async (address) => {
     }
 };
 
-// Fetch business details from Google Places API
-// placeId: string - Place ID to fetch details for
-// returns: object - Business details
+/*
+Fetch business details from Google Places API
+placeId: string - Place ID to fetch details for
+returns: object - Business details
+*/
 const fetchBusinessDetails = async (placeId) => {
     const detailsURL = new URL(`https://cors-anywhere.herokuapp.com/https://places.googleapis.com/v1/places/${placeId}?fields=photos,googleMapsUri&key=${placesKey}`);
     const response = await fetch(detailsURL);
@@ -80,9 +84,11 @@ const fetchBusinessDetails = async (placeId) => {
     return { reference: data.photos[0].name, id: data.photos[0].placeId, googleMapsUri: data.googleMapsUri };
 };
 
-// Fetch photo from Google Places API
-// photoReference: string - Photo reference to fetch
-// returns: string - Photo URL
+/*
+Fetch photo from Google Places API
+photoReference: string - Photo reference to fetch
+returns: string - Photo URL
+*/
 const fetchPhoto = async (photoReference) => {
     const photoURL = new URL(googlePlacesPhotoURL + photoReference + '/media');
     photoURL.searchParams.append('maxHeightPx', '400');
@@ -90,9 +96,11 @@ const fetchPhoto = async (photoReference) => {
     return photoURL.href;
 };
 
-// Fetch reviews for a single business from Yelp API
-// businessId: string - Business ID to fetch reviews for
-// returns: array - Reviews or null if no reviews are found
+/*
+Fetch reviews for a single business from Yelp API
+businessId: string - Business ID to fetch reviews for
+returns: array - Reviews or null if no reviews are found
+*/
 const fetchBusinessReviews = async (businessId) => {
     const reviewsURL = `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/${businessId}/reviews?limit=3&sort_by=yelp_sort`;
 
@@ -121,9 +129,11 @@ const fetchBusinessReviews = async (businessId) => {
     }
 };
 
-// Fetch businesses from Yelp API based on zip code and search term
-// zip: string - Zip code to search for
-// returns: array - Businesses or null if no businesses are found
+/*
+Fetch businesses from Yelp API based on zip code and search term
+zip: string - Zip code to search for
+returns: array - Businesses or null if no businesses are found
+*/
 const fetchBusinesses = async (zip) => {
     const listURL = new URL(queryURL);
     listURL.searchParams.append('limit', limit);
@@ -185,8 +195,10 @@ const fetchBusinesses = async (zip) => {
     }
 };
 
-// Function to search for businesses using the provided zip code
-// zip: string - Zip code to search for
+/*
+Function to search for businesses using the provided zip code
+zip: string - Zip code to search for
+*/
 async function searchZip(zip = $("#zip").val()) {
     if (zip.length !== 5 || isNaN(zip)) {
         $('#error').css('visibility', 'visible');
@@ -247,9 +259,11 @@ function addSearch(city, zip) {
     }
 }
 
-// Function to display search results
-// businesses: array - Array of businesses to display
-// zip: string - Zip code to display
+/*
+Function to display search results
+businesses: array - Array of businesses to display
+zip: string - Zip code to display
+*/
 function displayResults(businesses, zip) {
     $('#results').empty();
 
