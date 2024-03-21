@@ -134,4 +134,8 @@ footer {
    .imgDiv {
       width: 100%;
    }
+
+   #results {
+      width: 100%;
+   }
 }

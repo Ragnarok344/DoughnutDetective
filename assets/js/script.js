@@ -45,7 +45,7 @@ $(document).ready(function () {
         photoURL.searchParams.append('key', placesKey);
         return photoURL.href;
     }
-    
+
     // Function to fetch reviews for a single business
     const fetchBusinessReviews = async (businessId) => {
         const reviewsURL = `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/${businessId}/reviews?limit=3&sort_by=yelp_sort`;
@@ -164,12 +164,13 @@ $(document).ready(function () {
             $('#error').css('visibility', 'visible');
         } else {
             $('#modal').removeAttr('open');
-    
+
             // Fetch businesses using the provided zip code
             try {
                 const businesses = await fetchBusinesses(zip);
                 if (businesses === null) {
-                    console.log(`No donut places found near ${zip}`);
+                    $('#results').empty();
+                    $('#results').append(`<h2>No donut places found near ${zip}</h2>`);
                     return;
                 }
                 $('#error').css('visibility', 'hidden');
@@ -181,16 +182,16 @@ $(document).ready(function () {
         }
     }
 
-    $(document).click(function(event) {
-        if ($(event.target).closest('#modal article').length === 0 && $('#modal').attr('open')) {
-            $('#modal').removeAttr('open');
-        }
-    });
-
     function updateSearchHistory() {
         let searchHistory = JSON.parse(localStorage.getItem('History')) || [];
 
         $("#history").empty();
+
+        let firstOption = $("<option selected disabled value=''>").text("Search History");
+        $("#history").append(firstOption);
+
+        firstOption.hide();
+
         for (let i = 0; i < searchHistory.length; i++) {
             let option = $("<option>").text(searchHistory[i].city + " - " + searchHistory[i].zip);
 
@@ -220,6 +221,11 @@ $(document).ready(function () {
     // Function to display the results
     function displayResults(businesses) {
         // Clear the previous results
+        $('#results').empty();
+
+        let resultText = $("<h2>").text("Donut Shops in " + businesses[0].address + " " + businesses[0].zip);
+        $('#results').append(resultText);
+
         for (let i = 0; i < businesses.length; i++) {
             // Create a new card for each business
             let card = $("<article>");
@@ -262,7 +268,7 @@ $(document).ready(function () {
             reviewsContainer.append(reviews);
             cardBody.append(imgDiv, reviewsContainer);
             card.append(cardTitle, cardBody);
-            $("main").append(card); // Changed to append to body
+            $("#results").append(card);
         }
     }
     updateSearchHistory();
