@@ -40,42 +40,12 @@ $(document).ready(function () {
 
     // Fetches photo from Google Places
     const fetchPhoto = async (photoReference) => {
-        console.log(photoReference);
         const photoURL = new URL(googlePlacesPhotoURL + photoReference + '/media');
         photoURL.searchParams.append('maxHeightPx', '400');
         photoURL.searchParams.append('key', placesKey);
         return photoURL.href;
     }
-    // Function to fetch reviews for each business
-    const fetchReviews = async (businesses) => {
-        console.log('Fetching reviews...');
-        console.log(businesses);
-        // Iterate through each business
-        for (const business of businesses) {
-            const reviewsURL = `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/${business.id}/reviews?limit=3&sort_by=yelp_sort`;
-            console.log(business);
-            try {
-                // Fetch reviews data from Yelp API
-                const response = await fetch(reviewsURL, {
-                    method: "GET",
-                    headers: {
-                        "accept": "application/json",
-                        "x-requested-with": "xmlhttprequest",
-                        "Access-Control-Allow-Origin": "*",
-                        "Authorization": `Bearer ${yelpKey}`
-                    },
-                });
-                // Extract JSON data from the response
-                const data = await response.json();
-                // Log reviews for the current business
-                console.log('Reviews for', business.name + ':', data.reviews);
-            } catch (error) {
-                // Handle errors if fetching reviews fails
-                console.error('Error fetching reviews:', error);
-            }
-        }
-        console.log('Reviews fetching complete.'); // Log completion of reviews fetching
-    };
+    
     // Function to fetch reviews for a single business
     const fetchBusinessReviews = async (businessId) => {
         const reviewsURL = `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/${businessId}/reviews?limit=3&sort_by=yelp_sort`;
@@ -120,11 +90,14 @@ $(document).ready(function () {
                     "Authorization": `Bearer ${yelpKey}`
                 },
             });
+
+            if (response.status !== 200) {
+                return null;
+            }
             // Extract JSON data from the response
             const data = await response.json();
             // Return null if no businesses are found
             if (!data.businesses || data.businesses.length === 0) {
-                console.log('No businesses found.');
                 return null;
             }
             // Return the array of business
@@ -169,14 +142,13 @@ $(document).ready(function () {
         event.preventDefault();
         searchZip();
     });
-    $("#history").change(function() {
+    $("#history").change(function () {
         let selectedValue = $(this).find('option:selected').val();
         let parts = selectedValue.split(" -");
         let selectedZip = parts[1].trim();
-        console.log("Change event triggered");
         searchZip(selectedZip);
     });
-    
+
 
     $('#newSearch').click(function (e) {
         e.preventDefault();
@@ -188,44 +160,60 @@ $(document).ready(function () {
     })
     // Function to search for businesses using the provided zip code
     async function searchZip(zip = $("#zip").val()) {
-        console.log("searchZip called with zip:", zip);
         if (zip.length !== 5 || isNaN(zip)) {
             $('#error').css('visibility', 'visible');
-           
         } else {
             $('#modal').removeAttr('open');
-
+    
             // Fetch businesses using the provided zip code
             try {
                 const businesses = await fetchBusinesses(zip);
-                console.log(businesses);
+                if (businesses === null) {
+                    console.log(`No donut places found near ${zip}`);
+                    return;
+                }
                 $('#error').css('visibility', 'hidden');
                 addSearch(businesses[0].address, businesses[0].zip);
                 displayResults(businesses);
             } catch (error) {
                 console.error('Error:', error);
             };
-            
         }
     }
 
+    $(document).click(function(event) {
+        if ($(event.target).closest('#modal article').length === 0 && $('#modal').attr('open')) {
+            $('#modal').removeAttr('open');
+        }
+    });
+
     function updateSearchHistory() {
         let searchHistory = JSON.parse(localStorage.getItem('History')) || [];
+
+        $("#history").empty();
         for (let i = 0; i < searchHistory.length; i++) {
             let option = $("<option>").text(searchHistory[i].city + " - " + searchHistory[i].zip);
-            
+
             $("#history").append(option);
         }
     }
+
     function addSearch(city, zip) {
         let searchHistory = JSON.parse(localStorage.getItem('History')) || [];
         let search = {
             city: city,
             zip: zip
         };
-        searchHistory.push(search);
-        localStorage.setItem('History', JSON.stringify(searchHistory));
-        updateSearchHistory();
+
+        // Check if the search already exists in the history
+        let duplicate = searchHistory.some(item => item.city === city && item.zip === zip);
+
+        // If it's not a duplicate, add it to the history
+        if (!duplicate) {
+            searchHistory.push(search);
+            localStorage.setItem('History', JSON.stringify(searchHistory));
+            updateSearchHistory();
+        }
     }
 
 
@@ -273,7 +261,7 @@ $(document).ready(function () {
             // Append the links and reviews to the card
             reviewsContainer.append(reviews);
             cardBody.append(imgDiv, reviewsContainer);
-            card.append(cardTitle,cardBody);
+            card.append(cardTitle, cardBody);
             $("main").append(card); // Changed to append to body
         }
     }
