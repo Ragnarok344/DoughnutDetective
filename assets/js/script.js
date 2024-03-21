@@ -1,21 +1,29 @@
 // Go to https://cors-anywhere.herokuapp.com/corsdemo and click the button before opening application
 
+/*
+    This script is used to fetch donut shops near a given zip code using the Yelp and Google Places APIs.
+    It also allows the user to view the search history and select a previous search to view the results.
+*/
+
 // Define constants and global variables
-const yelpKey = "sHy9Gc5XgP9u3-Q919iLbJQ_jvzDuoz7kWnV-axjrEVNg5uvF3Q2mDPG1uMDoYSQKPNe2VmtZt82mLFCWzHJwhDgP64jiAHlR9PPNCGWZUoBH_0mZJFj16WH-YrzZXYx";
-const placesKey = "AIzaSyDekQjZnmtOgvPJybLzorOh7BmFKT4SAFs";
-const limit = 3;
-const term = 'donut';
-const queryURL = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?";
-const googlePlacesURL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?";
-const googlePlacesPhotoURL = "https://places.googleapis.com/v1/";
+const yelpKey = "sHy9Gc5XgP9u3-Q919iLbJQ_jvzDuoz7kWnV-axjrEVNg5uvF3Q2mDPG1uMDoYSQKPNe2VmtZt82mLFCWzHJwhDgP64jiAHlR9PPNCGWZUoBH_0mZJFj16WH-YrzZXYx"; // Yelp fusion API key
+const placesKey = "AIzaSyDekQjZnmtOgvPJybLzorOh7BmFKT4SAFs"; // Goodle Places API key
+const limit = 3; // Number of businesses to return
+const term = 'donut'; // Search term
+const queryURL = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?"; // Yelp API URL
+const googlePlacesURL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/textsearch/json?"; // Google Places API URL
+const googlePlacesPhotoURL = "https://places.googleapis.com/v1/"; // Google Places Photo API URL
 
 $(document).ready(function () {
     // Event listeners
+
+    // Search form submit event
     $("#search").on("submit", function (event) {
         event.preventDefault();
         searchZip();
     });
 
+    // Search history change event
     $("#history").change(function () {
         let selectedValue = $(this).find('option:selected').val();
         let parts = selectedValue.split(" -");
@@ -23,21 +31,27 @@ $(document).ready(function () {
         searchZip(selectedZip);
     });
 
+    // New search button click event
     $('#newSearch').click(function (e) {
         e.preventDefault();
         $('#modal').attr('open', '');
     });
 
+    // Close modal button click event
     $('#close').click(function (e) {
         $('#modal').removeAttr('open');
     });
 
-    // Initialization
+    // Initialize
     $('#results a').css('text-decoration', 'none');
     updateSearchHistory();
 });
 
-// Fetch place ID from Google
+// Functions
+
+// Fetch place ID from Google Places API
+// address: string - Address to search for
+// returns: string - Place ID or null if no results are found
 const fetchPlaceId = async (address) => {
     // Construct URL for Google Places API
     const placeURL = new URL(googlePlacesURL);
@@ -56,7 +70,9 @@ const fetchPlaceId = async (address) => {
     }
 };
 
-// Fetch business details from Google
+// Fetch business details from Google Places API
+// placeId: string - Place ID to fetch details for
+// returns: object - Business details
 const fetchBusinessDetails = async (placeId) => {
     const detailsURL = new URL(`https://cors-anywhere.herokuapp.com/https://places.googleapis.com/v1/places/${placeId}?fields=photos,googleMapsUri&key=${placesKey}`);
     const response = await fetch(detailsURL);
@@ -64,7 +80,9 @@ const fetchBusinessDetails = async (placeId) => {
     return { reference: data.photos[0].name, id: data.photos[0].placeId, googleMapsUri: data.googleMapsUri };
 };
 
-// Fetch photo from Google Places
+// Fetch photo from Google Places API
+// photoReference: string - Photo reference to fetch
+// returns: string - Photo URL
 const fetchPhoto = async (photoReference) => {
     const photoURL = new URL(googlePlacesPhotoURL + photoReference + '/media');
     photoURL.searchParams.append('maxHeightPx', '400');
@@ -72,7 +90,9 @@ const fetchPhoto = async (photoReference) => {
     return photoURL.href;
 };
 
-// Fetch reviews for a single business from Yelp
+// Fetch reviews for a single business from Yelp API
+// businessId: string - Business ID to fetch reviews for
+// returns: array - Reviews or null if no reviews are found
 const fetchBusinessReviews = async (businessId) => {
     const reviewsURL = `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/${businessId}/reviews?limit=3&sort_by=yelp_sort`;
 
@@ -96,11 +116,14 @@ const fetchBusinessReviews = async (businessId) => {
     } catch (error) {
         // Handle errors if fetching reviews fails
         console.error('Error fetching reviews:', error);
+        return null;
         throw error;
     }
 };
 
-// Fetch businesses from Yelp API based on zip code
+// Fetch businesses from Yelp API based on zip code and search term
+// zip: string - Zip code to search for
+// returns: array - Businesses or null if no businesses are found
 const fetchBusinesses = async (zip) => {
     const listURL = new URL(queryURL);
     listURL.searchParams.append('limit', limit);
@@ -131,6 +154,7 @@ const fetchBusinesses = async (zip) => {
         const businesses = data.businesses;
         const result = [];
 
+        // Loop through the businesses and fetch details for each
         for (const business of businesses) {
             const address = business.location.address1;
             const placeId = await fetchPlaceId(business.location.address1 + ' ' + business.location.city + ' ' + business.location.state + ' ' + business.location.zip_code);
@@ -162,6 +186,7 @@ const fetchBusinesses = async (zip) => {
 };
 
 // Function to search for businesses using the provided zip code
+// zip: string - Zip code to search for
 async function searchZip(zip = $("#zip").val()) {
     if (zip.length !== 5 || isNaN(zip)) {
         $('#error').css('visibility', 'visible');
@@ -186,6 +211,7 @@ async function searchZip(zip = $("#zip").val()) {
 
 // Function to update search history in the UI
 function updateSearchHistory() {
+    // Get search history from local storage
     let searchHistory = JSON.parse(localStorage.getItem('History')) || [];
 
     $("#history").empty();
@@ -203,6 +229,7 @@ function updateSearchHistory() {
 
 // Function to add a search to the search history
 function addSearch(city, zip) {
+    // Get search history from local storage
     let searchHistory = JSON.parse(localStorage.getItem('History')) || [];
     let search = {
         city: city,
@@ -221,6 +248,8 @@ function addSearch(city, zip) {
 }
 
 // Function to display search results
+// businesses: array - Array of businesses to display
+// zip: string - Zip code to display
 function displayResults(businesses, zip) {
     $('#results').empty();
 
@@ -269,5 +298,6 @@ function displayResults(businesses, zip) {
         card.append(cardTitle, cardBody);
         $("#results").append(card);
     }
+
     updateSearchHistory();
 }
