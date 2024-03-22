@@ -1,3 +1,9 @@
+/* Variables */
+a {
+   --pico-text-decoration: none;
+}
+
+/* Global Styles */
 html {
    box-sizing: border-box;
    font-size: 16px;
@@ -10,26 +16,25 @@ body {
    line-height: 1.6;
    color: var(--pico-primary-text);
    background-color: var(--pico-primary-background);
-}
-
-
-body {
    display: flex;
    flex-direction: column;
    min-height: 100vh;
 }
 
+/* Header Styles */
 header {
    background-color: var(--pico-secondary-background);
    color: var(--pico-primary-text);
    padding: 20px;
 }
 
+/* Image Styles */
 .scaled-img {
    max-width: 100%;
    height: auto;
 }
 
+/* Grid Styles */
 .grid {
    display: flex;
    justify-content: space-between;
@@ -44,6 +49,7 @@ header {
    margin: 0;
 }
 
+/* Controls Styles */
 .controls {
    display: flex;
    flex-direction: column;
@@ -67,22 +73,28 @@ header {
    margin-bottom: 0px;
 }
 
-
+/* Main Content Styles */
 main {
    flex: 1 0 auto;
+   background-image: url('../img/2.jpg');
+   background-size: cover;
+   background-position: center;
 }
 
+/* Footer Styles */
 footer {
    flex-shrink: 0;
    background-color: var(--pico-secondary-background);
 }
 
+/* Image Div Styles */
 .imgDiv {
    width: 25%;
    flex: none;
    align-self: start;
 }
 
+/* Accordion Styles */
 .accordion {
    width: 100% !important;
    box-sizing: border-box;
@@ -101,12 +113,36 @@ footer {
    box-sizing: border-box;
 }
 
+/* Results Styles */
+#results article {
+   --article-red: 24; /* Red component of #181c25 */
+   --article-green: 28; /* Green component of #181c25 */
+   --article-blue: 37; /* Blue component of #181c25 */
+   background-color: rgba(var(--article-red), var(--article-green), var(--article-blue), 0.95);
+}
+
+#results header {
+   --header-red: 26; /* Red component of #1a1f28 */
+   --header-green: 31; /* Green component of #1a1f28 */
+   --header-blue: 40; /* Blue component of #1a1f28 */
+   background-color: rgba(var(--header-red), var(--header-green), var(--header-blue), 0.95);
+}
+
 .card-container {
    display: flex;
    justify-content: space-between;
 }
 
-/* media query for small screens */
+#results header {
+   align-items: center;
+   padding-left: 32px;
+}
+
+#results h3 {
+   margin: 0px;
+}
+
+/* Media Query for Small Screens */
 @media screen and (max-width: 768px) {
    .grid {
       flex-direction: column;
