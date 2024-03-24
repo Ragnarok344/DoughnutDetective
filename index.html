@@ -42,7 +42,7 @@
     </div>
   </footer>
 
-  <!-- modal -->
+  <!-- Search modal -->
   <dialog open id="modal">
     <article>
       <header>
@@ -56,6 +56,18 @@
         <p id="error" style="visibility: hidden;">Enter a 5 digit zip code</p>
         <button type="submit">Search</button>
       </form>
+    </article>
+  </dialog>
+
+  <!-- CORS error modal -->
+  <dialog id="corsErrorModal">
+    <article>
+      <header>
+        <button aria-label="Close" rel="prev" id="closeCorsErrorModal"></button>
+        <p><strong>Access Denied</strong></p>
+      </header>
+      <p>It seems that we are unable to access the required resources due to a CORS restriction. Click the link below to request temporary access.</p>
+      <a href="https://cors-anywhere.herokuapp.com/corsdemo" target="_blank">Request Access</a>
     </article>
   </dialog>
 
