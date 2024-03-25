@@ -42,12 +42,35 @@ $(document).ready(function () {
         $('#modal').removeAttr('open');
     });
 
+    // Close CORS error modal
+    $('#closeCorsErrorModal').click(function (e) {
+        $('#corsErrorModal').removeAttr('open');
+    });
+
     // Initialize
     $('#results a').css('text-decoration', 'none');
     updateSearchHistory();
 });
 
 // Functions
+
+// Handle CORS error modal
+function showCorsErrorModal() {
+    $('#corsErrorModal').attr('open', '');
+}
+
+// Handle errors in fetch requests
+function handleFetchErrors(response) {
+    if (!response.ok) {
+        if (response.status === 403) {
+            showCorsErrorModal(); // Show CORS error modal for 403 error
+        } else {
+            console.error('Fetch error:', response.status);
+        }
+        throw Error(response.statusText);
+    }
+    return response;
+}
 
 /*
 Fetch place ID from Google Places API
@@ -151,9 +174,7 @@ const fetchBusinesses = async (zip) => {
             },
         });
 
-        if (response.status !== 200) {
-            return null;
-        }
+        handleFetchErrors(response); // Check for errors in response
 
         const data = await response.json();
 
