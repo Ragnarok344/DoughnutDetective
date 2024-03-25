@@ -59,7 +59,11 @@ function showCorsErrorModal() {
     $('#corsErrorModal').attr('open', '');
 }
 
-// Handle errors in fetch requests
+/*
+Handle fetch errors
+response: object - Fetch response object
+returns: object - Response object or throws error
+*/
 function handleFetchErrors(response) {
     if (!response.ok) {
         if (response.status === 403) {
